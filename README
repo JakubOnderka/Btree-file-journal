@@ -18,3 +18,16 @@ A v čem ještě spočívá tajemství rychlosti?
 TODO:
 - Není implementováno žádné vyvažování stromu, což může v nejhorším případě znamenat exponenciální časovou složitost. 
 - S keší není s ní pracováno inteligetně a může tedy docházet při velmi velkém indexu k využití velkého množství paměti.
+
+Použití
+===================
+Pokud chcete použít nebo otestovat tento žurnál, stačí nakopírovat soubor BtreeFileJournal.php do složky Nette\Caching a poté přidat do souboru bootstrap.php vašeho projektu následující řádky:
+Environment::getContext()
+        ->addService(
+                'Nette\\Caching\\ICacheJournal',
+                new Nette\Caching\BtreeFileJournal(
+                        Environment::getVariable('tempDir')
+                )
+        );
+        
+Tato verze je určena pouze pro PHP 5.3.0 a vyšší (využívá jemnné prostory) a i v případě méně závežných chyb vyhazuje výjimky a zatím tedy není vhodné pro ostré nasazení. V případě jakýchkoliv dotazů nebo nalezených chyb mne prosím kontaktujte. 
