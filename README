@@ -1,0 +1,20 @@
+Btree file journal
+===================
+
+Souborový žurnál určený k ukládání tagů a priorit kešovaných souborů. V budoucnu by mohl nahradit v současné době používaný žurnál. Ten je sice při jedontlivých zápisech velmi rychlý, protože data pouze ukládá na konec logu, problém nastane v případě, že velikost tohot logu překročí definovanou mez a začně se vytvářet trvalý soubor, což trvá velmi dlouho. Oproti tomu Btree žurnál log nepoužívá a vše ukládá již přímo na své místo. Proto například zvládne ukládat kolem 90 požadavků za sekundu, současný žurnál pouze 3 při konkurenci 10.
+
+I výběr a mazání je mnohem rychlejší, vyhledávání totiž probíhá pomocí datové struktury B+ stromu, kterou použivájí prakticky všechny databáze a souborové systémy. Navíc položky se nesmaží hned, pouze se označí jako smazané. To proto, že velmi často dojde k tomu, že ta samá položka bude do databáze zapsána znovu. Pokud se tak nestane, bude smazána při příštím mazání. 
+
+Nejen rychlost je jedniná výhoda: Současná implementace totiž neodstaňuje závilosti. To znamená, že pokud do žurnálu vložíme položku označenou dvěma rozdílnými tagy a jeden z nich smažeme, položka zůstane i nadále dostupná pod druhým z nich. Tento nový žurnál položku kompletně odstraní včentě všech závislostí.
+
+A v čem ještě spočívá tajemství rychlosti?
+- Data se ukládájí do bloků o velikosti 4 kiB, což je taktéž velikost bloku na dnešních discích, což je nejlepší velikost pro načítání a ukládání dat.
+- Pole nejsou ukládána v binárním formátu, ale jako serializovaná (buď pomocí funkce serialize nebo json_encode), což je v PHP bohužel rychlejší.
+- Při mazání podle priority je využita vlastnost B+ stromu a to, že odkazuje na předcházející blok, takže se nemusí znovu procházet od vrcholu celý strom.
+- Jako hashovací funkce pro je použita funkce crc32. Ta sice není na tento účel použití stavěná, což znamená že nebude tak unikátní jako jiné funkce, zato je velmi rychlá.
+- Je použita keš po ukládání již načtených nodů. V případě změny souboru jiným procem je keš invalidována, aby byla zajištěna konzistentnost žurnálu.
+- Všechny časti prošly velmi pečlivou optimalizací za použití profileru XHProf. Například pokud připojujeme jedno pole k druhému, je rychlejší použít foreach než array_merge.
+
+TODO:
+- Není implementováno žádné vyvažování stromu, což může v nejhorším případě znamenat exponenciální časovou složitost. 
+- S keší není s ní pracováno inteligetně a může tedy docházet při velmi velkém indexu k využití velkého množství paměti.
