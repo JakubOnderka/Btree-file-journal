@@ -32,7 +32,7 @@ class BtreeFileJournal implements ICacheJournal
   const NODESIZE   = 4096;
   
   /** @var int Bit rotation for saving data into nodes. BITROT = log2(NODESIZE)  */
-  const BITROT     = 14;
+  const BITROT     = 12;
   
   /** @var int Header size in bytes */
   const HEADERSIZE = 4096;
@@ -1052,7 +1052,7 @@ class BtreeFileJournal implements ICacheJournal
       if ($this->lastModTime !== NULL) {
         clearstatcache();
         if ($this->lastModTime < @filemtime($this->file)) {
-          $this->nodeCache = $dataNodeFreeSpace = array();
+          $this->nodeCache = $this->dataNodeFreeSpace = array();
         }
       }
     }

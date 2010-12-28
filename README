@@ -17,7 +17,7 @@ A v čem ještě spočívá tajemství rychlosti?
 
 TODO:
 - Není implementováno žádné vyvažování stromu, což může v nejhorším případě znamenat exponenciální časovou složitost. 
-- S keší není s ní pracováno inteligetně a může tedy docházet při velmi velkém indexu k využití velkého množství paměti.
+- S keší není pracováno inteligetně, tedy při velmi velkém indexu může docházet k využití velkého množství paměti.
 
 Použití
 ===================
