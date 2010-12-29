@@ -30,4 +30,6 @@ Environment::getContext()
                 )
         );
         
-Tato verze je určena pouze pro PHP 5.3.0 a vyšší (využívá jemnné prostory) a i v případě méně závežných chyb vyhazuje výjimky a zatím tedy není vhodné pro ostré nasazení. V případě jakýchkoliv dotazů nebo nalezených chyb mne prosím kontaktujte. 
+Tato verze je určena pouze pro PHP 5.3.0 a vyšší (využívá jmenné prostory) a i v případě méně závažných chyb vyhazuje výjimky a zatím tedy není vhodná pro ostré nasazení. 
+
+V případě jakýchkoliv dotazů nebo nalezených chyb mne prosím kontaktujte. 
